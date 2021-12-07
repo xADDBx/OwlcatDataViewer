@@ -132,7 +132,7 @@ namespace DataViewer.Utility.ReflectionTree {
                 visitCount++;
                 //Main.Log(depth, $"node: {node.Name} - {node.GetPath()}");
                 try {
-                    if (Matches(node.Name, searchText) || Matches(node.ValueText, searchText)) {
+                    if (node.Name.Matches(searchText) || node.ValueText.Matches(searchText)) {
                         foundMatch = true;
                         updator(visitCount, depth, breadth);
                         resultRoot.AddSearchResult(node);
