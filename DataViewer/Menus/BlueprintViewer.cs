@@ -82,7 +82,7 @@ namespace DataViewer.Menus {
         public void RefreshTypeNames() {
             _bpTypes = new Type[] { null }.Concat(GetBlueprints()
     .Select(bp => bp.GetType()).Distinct().OrderBy(type => type.Name)).ToArray();
-            if (!_selectionSearchText.IsNullOrEmpty()) {
+            if (!string.IsNullOrEmpty(_selectionSearchText)) {
                 _bpTypes = _bpTypes.Where(type => type == null ? true : StringExtensions.Matches(type.Name, _selectionSearchText)).ToArray();
             }
             _bpTypeNames = _bpTypes.Select(type => type?.Name).ToArray();

@@ -1,7 +1,7 @@
 ﻿using Kingmaker;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
-using Kingmaker.Blueprints.Classes.Selection;
+//using Kingmaker.Blueprints.Classes.Selection;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.UnitLogic;
 using ModKit;
@@ -16,9 +16,10 @@ using static DataViewer.Main;
 
 namespace DataViewer.Menus {
     public class FeaturesTreeViewer : IMenuSelectablePage {
+#if false
         private UnitEntityData _selectedCharacter = null;
         private FeaturesTree _featuresTree;
-
+#endif
         private GUIStyle _buttonStyle;
 
         public string Name => "Features Tree";
@@ -28,7 +29,7 @@ namespace DataViewer.Menus {
         public void OnGUI(UnityModManager.ModEntry modEntry) {
             if (ModManager == null || !ModManager.Enabled)
                 return;
-
+#if false
             string activeScene = SceneManager.GetActiveScene().name;
             if (Game.Instance?.Player == null || activeScene == "MainMenu" || activeScene == "Start") {
                 GUILayout.Label(" * Please start or load the game first.".color(RGBA.yellow));
@@ -206,6 +207,7 @@ namespace DataViewer.Menus {
                     Source = source;
                 }
             }
+#endif
         }
     }
 }

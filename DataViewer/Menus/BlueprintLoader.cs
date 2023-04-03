@@ -12,7 +12,7 @@ using System.Reflection;
 using Kingmaker;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
-using Kingmaker.Blueprints.Classes.Spells;
+//using Kingmaker.Blueprints.Classes.Spells;
 using Kingmaker.Blueprints.Facts;
 using Kingmaker.Blueprints.Items;
 using Kingmaker.Blueprints.Items.Armors;
@@ -81,7 +81,7 @@ namespace DataViewer.Menus {
                 yield return null;
                 toc = ResourcesLibrary.BlueprintsCache.m_LoadedBlueprints;
             }
-            var allGUIDs = new List<BlueprintGuid> { };
+            var allGUIDs = new List<string> { };
             foreach (var key in toc.Keys) {
                 allGUIDs.Add(key);
             }
