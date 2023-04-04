@@ -1,9 +1,10 @@
 ﻿using Kingmaker;
 using Kingmaker.Blueprints;
 using Kingmaker.Blueprints.Classes;
-//using Kingmaker.Blueprints.Classes.Selection;
+using Kingmaker.EntitySystem;
 using Kingmaker.EntitySystem.Entities;
 using Kingmaker.UnitLogic;
+using Kingmaker.UnitLogic.Progression.Paths;
 using ModKit;
 using ModKit.Utility;
 using System;
@@ -16,10 +17,8 @@ using static DataViewer.Main;
 
 namespace DataViewer.Menus {
     public class FeaturesTreeViewer : IMenuSelectablePage {
-#if false
-        private UnitEntityData _selectedCharacter = null;
+        private UnitEntity _selectedCharacter = null;
         private FeaturesTree _featuresTree;
-#endif
         private GUIStyle _buttonStyle;
 
         public string Name => "Features Tree";
@@ -29,7 +28,6 @@ namespace DataViewer.Menus {
         public void OnGUI(UnityModManager.ModEntry modEntry) {
             if (ModManager == null || !ModManager.Enabled)
                 return;
-#if false
             string activeScene = SceneManager.GetActiveScene().name;
             if (Game.Instance?.Player == null || activeScene == "MainMenu" || activeScene == "Start") {
                 GUILayout.Label(" * Please start or load the game first.".color(RGBA.yellow));
@@ -44,7 +42,7 @@ namespace DataViewer.Menus {
 
                     // character selection
                     using (new GUILayout.VerticalScope(GUILayout.ExpandWidth(false))) {
-                        List<UnitEntityData> companions = Game.Instance?.Player.AllCharacters
+                        List<BaseUnitEntity> companions = Game.Instance?.Player.AllCharacters
                                 .Where(c => c.IsPlayerFaction).ToList(); // && !c.Descriptor.IsPet).ToList();
 
                         int selectedCharacterIndex = companions.IndexOf(_selectedCharacter) + 1;
@@ -52,9 +50,10 @@ namespace DataViewer.Menus {
                             new string[] { "None" }.Concat(companions.Select(item => item.CharacterName)).ToArray(),
                             1, (index) => {
                                 if (index > 0) {
-                                    _selectedCharacter = companions[index - 1];
+                                    if (companions[index -1] is UnitEntity unit)
+                                    _selectedCharacter = unit;
                                     modEntry.Logger.Log($"selected: {_selectedCharacter.CharacterName}");
-                                    _featuresTree = new FeaturesTree(_selectedCharacter.Descriptor.Progression);
+                                    _featuresTree = new FeaturesTree(_selectedCharacter.Progression);
                                 }
                             }, GUILayout.ExpandWidth(false));
                         if (selectedCharacterIndex == 0 &&
@@ -73,7 +72,7 @@ namespace DataViewer.Menus {
                             // draw tool bar
                             using (new GUILayout.HorizontalScope()) {
                                 if (GUILayout.Button("Refresh")) {
-                                    _featuresTree = new FeaturesTree(_selectedCharacter.Descriptor.Progression);
+                                    _featuresTree = new FeaturesTree(_selectedCharacter.Progression);
                                 }
                                 expandAll = GUILayout.Button("Expand All");
                                 collapseAll = GUILayout.Button("Collapse All");
@@ -125,7 +124,7 @@ namespace DataViewer.Menus {
         private class FeaturesTree {
             public readonly List<FeatureNode> RootNodes = new List<FeatureNode>();
 
-            public FeaturesTree(UnitProgressionData progression) {
+            public FeaturesTree(PartUnitProgression progression) {
                 Dictionary<BlueprintScriptableObject, FeatureNode> normalNodes = new Dictionary<BlueprintScriptableObject, FeatureNode>();
                 List<FeatureNode> parametrizedNodes = new List<FeatureNode>();
 
@@ -136,25 +135,27 @@ namespace DataViewer.Menus {
                     if (name == null || name.Length == 0)
                         name = feature.Blueprint.name;
                     //Main.Log($"feature: {name}");
-                    var source = feature.m_Source;
+                    var source = feature.FirstSource;
                     //Main.Log($"source: {source}");
+#if false
                     if (feature.Blueprint is BlueprintParametrizedFeature)
                         parametrizedNodes.Add(new FeatureNode(name, feature.Blueprint, source));
                     else
+#endif
                         normalNodes.Add(feature.Blueprint, new FeatureNode(name, feature.Blueprint, source));
                 }
 
                 // get nodes (classes)
-                foreach (BlueprintCharacterClass characterClass in progression.Classes.Select(item => item.CharacterClass)) {
+                foreach (var characterClass in progression.AllCareerPaths.Select((pair => pair.Blueprint))) {
                     normalNodes.Add(characterClass, new FeatureNode(characterClass.Name, characterClass, null));
                 }
-
+#if false
                 // set source selection
                 List<FeatureNode> selectionNodes = normalNodes.Values
                     .Where(item => item.Blueprint is BlueprintFeatureSelection).ToList();
                 for (int i = 0; i <= 20; i++) {
                     foreach (var selection in selectionNodes) {
-                        foreach (BlueprintFeature feature in progression.GetSelections(selection.Blueprint as BlueprintFeatureSelection, i)) {
+                        foreach (BlueprintFeature feature in progression.GetSelections(selection.Blueprint as BlueprintFeatureSelection_Obsolete i)) {
                             FeatureNode node = default;
                             if (feature is BlueprintParametrizedFeature) {
                                 node = parametrizedNodes
@@ -172,18 +173,18 @@ namespace DataViewer.Menus {
                         }
                     }
                 }
-
+#endif
                 // build tree
                 foreach (FeatureNode node in normalNodes.Values.Concat(parametrizedNodes).ToList()) {
                     if (node.Source == null) {
                         RootNodes.Add(node);
                     }
-                    else if (normalNodes.TryGetValue(node.Source, out FeatureNode parent)) {
+                    else if (normalNodes.TryGetValue(node.Source.Blueprint, out FeatureNode parent)) {
                         parent.ChildNodes.Add(node);
                     }
                     else {
                         // missing parent
-                        parent = new FeatureNode(string.Empty, node.Source, null) { IsMissing = true };
+                        parent = new FeatureNode(string.Empty, node.Source.Blueprint, null) { IsMissing = true };
                         parent.ChildNodes.Add(node);
                         normalNodes.Add(parent.Blueprint, parent);
                         RootNodes.Add(parent);
@@ -193,7 +194,7 @@ namespace DataViewer.Menus {
 
             public class FeatureNode {
                 internal bool IsMissing;
-                internal BlueprintScriptableObject Source;
+                internal EntityFactSource Source;
 
                 public readonly string Name;
                 public readonly BlueprintScriptableObject Blueprint;
@@ -201,13 +202,12 @@ namespace DataViewer.Menus {
 
                 public ToggleState Expanded;
 
-                internal FeatureNode(string name, BlueprintScriptableObject blueprint, BlueprintScriptableObject source) {
+                internal FeatureNode(string name, BlueprintScriptableObject blueprint, EntityFactSource source) {
                     Name = name;
                     Blueprint = blueprint;
                     Source = source;
                 }
             }
-#endif
         }
     }
 }
