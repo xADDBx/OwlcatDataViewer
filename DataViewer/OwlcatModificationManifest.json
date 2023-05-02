@@ -1,6 +1,6 @@
 {
   "UniqueName": "DataViewer",
-  "Version": "0.0.1",
+  "Version": "1.0.7",
   "DisplayName": "Data Viewer",
   "Description": "Data Viewer is a powerful developer tool to aid modders in understanding how Rouge Trader works. It lets you browse the actual data living in the running game! It also lets you view blueprints, feats on your character and the patches made by various mods. This is based on Narria enhanced WotR port of the excellent Kingmaker Data Viewer by Hsinyu",
   "Author": "Narria",
