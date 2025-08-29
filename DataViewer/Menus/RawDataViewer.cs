@@ -1,7 +1,6 @@
 ﻿using DataViewer.Utility;
 using Kingmaker;
 using Kingmaker.Blueprints.Root;
-using Kingmaker.Globalmap.View;
 using ModKit;
 using ModKit.Utility;
 using System;

@@ -1,300 +1,176 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Costura.Fody.5.3.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.5.3.0\build\Costura.Fody.props')" />
-  <Import Project="..\packages\Aze.Publicise.MSBuild.Task.1.0.0\build\Aze.Publicise.MSBuild.Task.props" Condition="Exists('..\packages\Aze.Publicise.MSBuild.Task.1.0.0\build\Aze.Publicise.MSBuild.Task.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <RoguePath Condition=" '$(RoguePath)' == '' ">C:\Program Files (x86)\Steam\steamapps\common\Warhammer 40,000 Rogue Trader</RoguePath>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <Target Name="Publicise" AfterTargets="Clean">
-    <ItemGroup>
-      <PubliciseInputAssemblies Include="$(RoguePath)\WH40KRT_Data\Managed\Code.dll" />
-    </ItemGroup>
-    <Publicise InputAssemblies="@(PubliciseInputAssemblies)" OutputPath="$(SolutionDir)lib/" PubliciseCompilerGenerated="true" />
-  </Target>
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BE774C47-B2F5-46F9-A96E-96672887AB5D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataViewer</RootNamespace>
-    <AssemblyName>DataViewer</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>false</Deterministic>
-    <LangVersion>9</LangVersion>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\DataViewer\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <LangVersion>9</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>portable</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\DataViewer\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>0</WarningLevel>
-    <LangVersion>9</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugSymbols>true</DebugSymbols>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="HarmonyPatches.cs" />
-    <Compile Include="Main.cs" />
-    <Compile Include="Menus\BlueprintLoader.cs" />
-    <Compile Include="Menus\BlueprintViewer.cs" />
-    <Compile Include="Menus\FeaturesTreeViewer.cs" />
-    <Compile Include="Menus\RawDataViewer.cs" />
-    <Compile Include="Menus\PatchesViewer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
-    <Compile Include="Core.cs" />
-    <Compile Include="Utility\ObjectSet.cs" />
-    <Compile Include="Utility\ReflectionSearch.cs" />
-    <Compile Include="Utility\ReflectionTree.cs" />
-    <Compile Include="Utility\ReflectionTreeView.cs" />
-    <Compile Include="Utility\ReflectionSearchResult.cs" />
-    <Compile Include="Utility\UnsafeForceCast.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lib.Harmony.2.0.4\lib\net472\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Code">
-      <HintPath>$(SolutionDir)lib\Code_public.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Costura, Version=5.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Costura.Fody.5.3.0\lib\netstandard1.0\Costura.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.AppContext, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.AppContext.4.3.0\lib\net463\System.AppContext.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Console, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Console.4.3.0\lib\net46\System.Console.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Diagnostics.Tracing, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.Tracing.4.3.0\lib\net462\System.Diagnostics.Tracing.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Globalization.Calendars, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Globalization.Calendars.4.3.0\lib\net46\System.Globalization.Calendars.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.Compression, Version=4.1.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Compression.4.3.0\lib\net46\System.IO.Compression.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.FileSystem, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.4.3.0\lib\net46\System.IO.FileSystem.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Linq, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Linq.4.3.0\lib\net463\System.Linq.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Linq.Expressions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Linq.Expressions.4.3.0\lib\net463\System.Linq.Expressions.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Http.4.3.0\lib\net46\System.Net.Http.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Sockets, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Net.Sockets.4.3.0\lib\net46\System.Net.Sockets.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Reflection, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reflection.4.3.0\lib\net462\System.Reflection.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.Extensions.4.3.0\lib\net462\System.Runtime.Extensions.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.InteropServices, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.4.3.0\lib\net463\System.Runtime.InteropServices.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.RegularExpressions.4.3.0\lib\net463\System.Text.RegularExpressions.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>$(RoguePath)\WH40KRT_Data\Managed\Unity.TextMeshPro.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>$(RoguePath)\WH40KRT_Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>$(RoguePath)\WH40KRT_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(RoguePath)\WH40KRT_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>$(RoguePath)\WH40KRT_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(RoguePath)\WH40KRT_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>$(RoguePath)\WH40KRT_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>$(RoguePath)\WH40KRT_Data\Managed\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="UnityModManager">
-      <HintPath>$(WrathPath)\Wrath_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".editorconfig" />
-    <None Include="Info.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="OwlcatModificationManifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="OwlcatModificationSettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="Repository.json" />
-    <None Include="zip-hash-sign.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.md" />
-  </ItemGroup>
-  <Import Project="..\..\ToyBox\ModKit\ModKitSrc.projitems" Label="Shared" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>echo "$(TargetPath)" "&gt;C:\Program Files (x86)\Steam\steamapps\common\Warhammer 40,000 Rogue Trader\Mods\$(ProjectName)\$(ProjectName).dll*"
-copy /Y "$(TargetPath)" "C:\Program Files (x86)\Steam\steamapps\common\Warhammer 40,000 Rogue Trader\Mods\$(ProjectName)\$(ProjectName).dll"
-copy /Y "$(TargetDir)$(TargetName).pdb" "C:\Program Files (x86)\Steam\steamapps\common\Warhammer 40,000 Rogue Trader\Mods\$(ProjectName)\$(ProjectName).pdb"
-powershell.exe -ExecutionPolicy Unrestricted -f "$(ProjectDir)zip-hash-sign.ps1"
+﻿<Project Sdk="Microsoft.NET.Sdk" InitialTargets="GenerateCustomPropsFile">
+	<PropertyGroup>
+		<Configurations>RogueTrader;Wrath;Kingmaker</Configurations>
+		<Configuration Condition="'$(Configuration)' == ''">RogueTrader</Configuration>
+		<TargetGame Condition="'$(TargetGame)' == ''">$(Configuration)</TargetGame>
 
-</PostBuildEvent>
-  </PropertyGroup>
-  <Import Project="..\packages\Fody.6.5.1\build\Fody.targets" Condition="Exists('..\packages\Fody.6.5.1\build\Fody.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Fody.6.5.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.5.1\build\Fody.targets'))" />
-    <Error Condition="!Exists('..\packages\Costura.Fody.5.3.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.3.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('..\packages\Costura.Fody.5.3.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.5.3.0\build\Costura.Fody.targets'))" />
-  </Target>
-  <Import Project="..\packages\Costura.Fody.5.3.0\build\Costura.Fody.targets" Condition="Exists('..\packages\Costura.Fody.5.3.0\build\Costura.Fody.targets')" />
+		<TargetFramework Condition="'$(Configuration)' != 'Kingmaker'">net481</TargetFramework>
+		<TargetFramework Condition="'$(Configuration)' == 'Kingmaker'">net481</TargetFramework>
+		<AssemblyName>DataViewer</AssemblyName>
+		<Description>DataViewer</Description>
+		<Version>1.0.7</Version>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>latest</LangVersion>
+		<Nullable>annotations</Nullable>
+		<RootNamespace>DataViewer</RootNamespace>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<RestoreAdditionalProjectSources>https://api.nuget.org/v3/index.json</RestoreAdditionalProjectSources>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RogueTraderData>$(LocalAppData)Low\Owlcat Games\Warhammer 40000 Rogue Trader</RogueTraderData>
+		<WrathData>$(LocalAppData)Low\Owlcat Games\Pathfinder Wrath Of The Righteous</WrathData>
+		<KingmakerData>$(LocalAppData)Low\Owlcat Games\Pathfinder Kingmaker</KingmakerData>
+	</PropertyGroup>
+	<Import Project="$(SolutionDir)GamePath_Kingmaker.props" Condition="Exists('$(SolutionDir)GamePath_Kingmaker.props') and '$(TargetGame)' == 'Kingmaker'" />
+	<Import Project="$(SolutionDir)GamePath_Wrath.props" Condition="Exists('$(SolutionDir)GamePath_Wrath.props') and '$(TargetGame)' == 'Wrath'" />
+	<Import Project="$(SolutionDir)GamePath_RogueTrader.props" Condition="Exists('$(SolutionDir)GamePath_RogueTrader.props') and '$(TargetGame)' == 'RogueTrader'" />
+
+	<PropertyGroup Condition="'$(TargetGame)' == 'RogueTrader'">
+		<Game>RogueTrader</Game>
+		<GameDataFolder>WH40KRT_Data</GameDataFolder>
+		<DefineConstants>RT</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetGame)' == 'Wrath'">
+		<Game>Wrath</Game>
+		<GameDataFolder>Wrath_Data</GameDataFolder>
+		<DefineConstants>Wrath</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(TargetGame)' == 'Kingmaker'">
+		<Game>Kingmaker</Game>
+		<GameDataFolder>Kingmaker_Data</GameDataFolder>
+		<DefineConstants>KM</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup Condition="'$(TargetGame)' == 'RogueTrader'">
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\Unity*.dll" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\Kingmaker*.dll" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\Utility*.dll" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\Core*.dll" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\Owlcat*.dll" Publicize="true" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\RogueTrader*.dll" Publicize="true" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\Code.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\LocalizationShared.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(RogueTraderData)\UnityModManager\UnityModManager.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\0Harmony.dll*" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\Newtonsoft.Json.dll*" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\UniRx.dll*" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\ContextData.dll*" Private="false" />
+		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\StateHasher.dll*" Private="false" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetGame)' == 'Wrath'">
+		<Reference Include="$(WrathInstallDir)\$(GameDataFolder)\Managed\Unity*.dll" Private="false" />
+		<Reference Include="$(WrathInstallDir)\$(GameDataFolder)\Managed\Core*.dll" Private="false" />
+		<Reference Include="$(WrathInstallDir)\$(GameDataFolder)\Managed\Owlcat*.dll" Publicize="true" Private="false" />
+		<Reference Include="$(WrathInstallDir)\$(GameDataFolder)\Managed\Assembly-CSharp.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(WrathInstallDir)\$(GameDataFolder)\Managed\UnityModManager\UnityModManager.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(WrathInstallDir)\$(GameDataFolder)\Managed\Newtonsoft.Json.dll*" Private="false" />
+		<Reference Include="$(WrathInstallDir)\$(GameDataFolder)\Managed\UniRx.dll*" Private="false" />
+		<Reference Include="$(WrathInstallDir)\$(GameDataFolder)\Managed\UnityModManager\0Harmony.dll*" Private="false" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetGame)' == 'Kingmaker'">
+		<Reference Include="$(KingmakerInstallDir)\$(GameDataFolder)\Managed\Unity*.dll" Private="false" />
+		<Reference Include="$(KingmakerInstallDir)\$(GameDataFolder)\Managed\Assembly-CSharp.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(KingmakerInstallDir)\$(GameDataFolder)\Managed\Newtonsoft.Json.dll*" Private="false" />
+		<Reference Include="$(KingmakerInstallDir)\$(GameDataFolder)\Managed\UniRx.dll*" Private="false" />
+		<Reference Include="$(KingmakerInstallDir)\$(GameDataFolder)\Managed\UnityModManager\UnityModManager.dll*" Publicize="true" Private="false" />
+		<Reference Include="$(KingmakerInstallDir)\$(GameDataFolder)\Managed\UnityModManager\0Harmony.dll*" Private="false" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Info.json" CopyToOutputDirectory="PreserveNewest" Link="%(Filename)%(Extension)" />
+	</ItemGroup>
+	<Target Name="Deploy" AfterTargets="Build">
+		<ItemGroup>
+			<Files Include="$(TargetDir)\**\*.*" />
+		</ItemGroup>
+		
+		<Copy SourceFiles="@(Files)" Condition="'$(TargetGame)' == 'RogueTrader'"
+			  DestinationFiles="@(Files->'$(RogueTraderData)\UnityModManager\$(AssemblyName)\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(Files)" Condition="'$(TargetGame)' == 'Wrath'"
+			  DestinationFiles="@(Files->'$(WrathInstallDir)\Mods\$(AssemblyName)\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(Files)" Condition="'$(TargetGame)' == 'Kingmaker'"
+			  DestinationFiles="@(Files->'$(KingmakerInstallDir)\Mods\$(AssemblyName)\%(RecursiveDir)%(Filename)%(Extension)')" />
+
+		<ZipDirectory SourceDirectory="$(MSBuildProjectDirectory)\$(OutputPath)" DestinationFile="$(MSBuildProjectDirectory)\$(OutputPath)\..\$(AssemblyName)-$(TargetGame)-$(Version).zip" Overwrite="true" />
+	</Target>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+		<PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" IncludeAssets="build; contentfiles" Version="0.4.2" PrivateAssets="all" />
+		<PackageReference Include="MicroUtils.HarmonyAnalyzers" IncludeAssets="runtime; build; native; contentfiles; analyzers" Version="*-*" PrivateAssets="all" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<ChosenInstallDir Condition="'$(TargetGame)' == 'RogueTrader'">$(RogueTraderInstallDir)</ChosenInstallDir>
+		<ChosenInstallDir Condition="'$(TargetGame)' == 'Wrath'">$(WrathInstallDir)</ChosenInstallDir>
+		<ChosenInstallDir Condition="'$(TargetGame)' == 'Kingmaker'">$(KingmakerInstallDir)</ChosenInstallDir>
+	</PropertyGroup>
+	<Target Name="GenerateCustomPropsFile" Condition="'$(ChosenInstallDir)' == ''">
+		<!-- RogueTrader -->
+		<Exec Condition="'$(RogueTraderInstallDir)' == ''"
+			  Command="findstr /C:&quot;Mono path[0]&quot; &quot;$(RogueTraderData)\Player.log&quot;"
+			  IgnoreExitCode="true" ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="RT_MonoPathLine" />
+		</Exec>
+
+		<PropertyGroup>
+			<RT_MonoPathRegex>^Mono path\[0\] = '(.*?)/WH40KRT_Data/Managed'$</RT_MonoPathRegex>
+			<RogueTraderInstallDir Condition="'$(RogueTraderInstallDir)' == ''">$([System.Text.RegularExpressions.Regex]::Match($(RT_MonoPathLine), $(RT_MonoPathRegex)).Groups[1].Value)</RogueTraderInstallDir>
+		</PropertyGroup>
+
+		<WriteLinesToFile Condition="'$(RogueTraderInstallDir)' != ''"
+						  File="$(SolutionDir)GamePath_RogueTrader.props"
+						  Lines="&lt;Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003'&gt;&#xD;
+  &lt;PropertyGroup&gt;&#xD;
+    &lt;RogueTraderInstallDir&gt;$(RogueTraderInstallDir)&lt;/RogueTraderInstallDir&gt;&#xD;
+  &lt;/PropertyGroup&gt;&#xD;
+&lt;/Project&gt;"
+						  Overwrite="true" Encoding="utf-8" />
+
+		<!-- Wrath -->
+		<Exec Condition="'$(WrathInstallDir)' == ''"
+			  Command="findstr /C:&quot;Mono path[0]&quot; &quot;$(WrathData)\Player.log&quot;"
+			  IgnoreExitCode="true" ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="Wr_MonoPathLine" />
+		</Exec>
+
+		<PropertyGroup>
+			<Wr_MonoPathRegex>^Mono path\[0\] = '(.*?)/Wrath_Data/Managed'$</Wr_MonoPathRegex>
+			<WrathInstallDir Condition="'$(WrathInstallDir)' == ''">$([System.Text.RegularExpressions.Regex]::Match($(Wr_MonoPathLine), $(Wr_MonoPathRegex)).Groups[1].Value)</WrathInstallDir>
+		</PropertyGroup>
+
+		<WriteLinesToFile Condition="'$(WrathInstallDir)' != ''"
+						  File="$(SolutionDir)GamePath_Wrath.props"
+						  Lines="&lt;Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003'&gt;&#xD;
+  &lt;PropertyGroup&gt;&#xD;
+    &lt;WrathInstallDir&gt;$(WrathInstallDir)&lt;/WrathInstallDir&gt;&#xD;
+  &lt;/PropertyGroup&gt;&#xD;
+&lt;/Project&gt;"
+						  Overwrite="true" Encoding="utf-8" />
+
+		<!-- Kingmaker (different log format) -->
+		<Exec Condition="'$(KingmakerInstallDir)' == ''"
+			  Command="findstr /C:&quot;[Manager] Mods path: &quot; &quot;$(KingmakerData)\output_log.txt&quot;"
+			  IgnoreExitCode="true" ConsoleToMSBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="KM_MonoPathLine" />
+		</Exec>
+
+		<PropertyGroup>
+			<KM_MonoPathRegex>^\[Manager\] Mods path: (.*?)\\Mods.$</KM_MonoPathRegex>
+			<KingmakerInstallDir Condition="'$(KingmakerInstallDir)' == ''">$([System.Text.RegularExpressions.Regex]::Match($(KM_MonoPathLine), $(KM_MonoPathRegex)).Groups[1].Value)</KingmakerInstallDir>
+		</PropertyGroup>
+
+		<WriteLinesToFile Condition="'$(KingmakerInstallDir)' != ''"
+						  File="$(SolutionDir)GamePath_Kingmaker.props"
+						  Lines="&lt;Project xmlns='http://schemas.microsoft.com/developer/msbuild/2003'&gt;&#xD;
+  &lt;PropertyGroup&gt;&#xD;
+    &lt;KingmakerInstallDir&gt;$(KingmakerInstallDir)&lt;/KingmakerInstallDir&gt;&#xD;
+  &lt;/PropertyGroup&gt;&#xD;
+&lt;/Project&gt;"
+						  Overwrite="true" Encoding="utf-8" />
+	</Target>
+
+	<Target Name="DeleteCustomPropsFile" BeforeTargets="Clean">
+		<Delete Files="GamePath_RogueTrader.props" />
+		<Delete Files="GamePath_Wrath.props" />
+		<Delete Files="GamePath_Kingmaker.props" />
+	</Target>
 </Project>

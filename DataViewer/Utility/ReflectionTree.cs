@@ -1,4 +1,7 @@
 ﻿using Kingmaker.Blueprints;
+#if KM
+using Kingmaker.Blueprints.DirectSerialization;
+#endif
 using ModKit;
 using System;
 using System.Collections;
@@ -56,9 +59,9 @@ namespace DataViewer.Utility.ReflectionTree {
             Type = type;
             IsNullable = Type.IsGenericType && !Type.IsGenericTypeDefinition && Type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
-        [ObsoleteAttribute("TODO - move this into a proper view model", false)]
+        //[ObsoleteAttribute("TODO - move this into a proper view model", false)]
         public ToggleState Expanded { get; set; }
-        [ObsoleteAttribute("TODO - move this into a proper view model", false)]
+        //[ObsoleteAttribute("TODO - move this into a proper view model", false)]
         public bool Matches { get; set; }
         public string NodeTypePrefix {
             get {
@@ -218,8 +221,13 @@ namespace DataViewer.Utility.ReflectionTree {
             protected set {
                 if (!value?.Equals(_value) ?? _value != null) {
                     _value = value;
+#if KM
+                    if (value is BlueprintReference bpRefBase && bpRefBase.m_Cached is null)
+                        bpRefBase.Get();
+#else
                     if (value is BlueprintReferenceBase bpRefBase && bpRefBase.Cached is null)
                         bpRefBase.GetBlueprint();
+#endif
                     _enumerableCount = -1;
                     if (!Type.IsValueType || IsNullable) {
                         Type oldType = _instType;

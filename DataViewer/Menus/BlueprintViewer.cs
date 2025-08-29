@@ -16,8 +16,13 @@ using Kingmaker.Utility;
 namespace DataViewer.Menus {
     public class BlueprintViewer : IMenuSelectablePage {
         Settings settings => Main.settings;
+#if KM
+        private static IEnumerable<BlueprintScriptableObject> _allBlueprints = null;
+        public static IEnumerable<BlueprintScriptableObject> GetBlueprints() {
+#else
         private static IEnumerable<SimpleBlueprint> _allBlueprints = null;
         public static IEnumerable<SimpleBlueprint> GetBlueprints() {
+#endif
             if (_allBlueprints == null) {
                 if (BlueprintLoader.Shared.LoadInProgress()) { return null; }
                 else {
@@ -35,7 +40,11 @@ namespace DataViewer.Menus {
         // blueprint info
         private Type[] _bpTypes;
         private string[] _bpTypeNames;
+#if KM
+        private static IEnumerable<BlueprintScriptableObject> _filteredBPs = null;
+#else
         private static IEnumerable<SimpleBlueprint> _filteredBPs = null;
+#endif
 
         // tree view
         private ReflectionTreeView _treeView = new ReflectionTreeView();

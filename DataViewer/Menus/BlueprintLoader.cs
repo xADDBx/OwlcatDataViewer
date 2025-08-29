@@ -44,9 +44,17 @@ using Kingmaker.Utility;
 
 namespace DataViewer.Menus {
     public class BlueprintLoader : MonoBehaviour {
+#if KM
+        public delegate void LoadBlueprintsCallback(IEnumerable<BlueprintScriptableObject> blueprints);
+#else
         public delegate void LoadBlueprintsCallback(IEnumerable<SimpleBlueprint> blueprints);
+#endif
         LoadBlueprintsCallback callback;
+#if KM
+        List<BlueprintScriptableObject> blueprints;
+#else
         List<SimpleBlueprint> blueprints;
+#endif
         public float progress = 0;
         private static BlueprintLoader _shared;
         public static BlueprintLoader Shared {
@@ -70,25 +78,53 @@ namespace DataViewer.Menus {
             int loaded = 0;
             int total = 1;
             yield return null;
+#if KM
+            var bpCache = ResourcesLibrary.LibraryObject;
+#else
             var bpCache = ResourcesLibrary.BlueprintsCache;
+#endif
             while (bpCache == null) {
                 yield return null;
+#if KM
+                bpCache = ResourcesLibrary.LibraryObject;
+#else
                 bpCache = ResourcesLibrary.BlueprintsCache;
+#endif
             }
+#if KM
+            blueprints = new List<BlueprintScriptableObject> { };
+#else
             blueprints = new List<SimpleBlueprint> { };
+#endif
+#if KM
+            var toc = ResourcesLibrary.LibraryObject.BlueprintsByAssetId;
+#else
             var toc = ResourcesLibrary.BlueprintsCache.m_LoadedBlueprints;
+#endif
             while (toc == null) {
                 yield return null;
+#if KM
+                toc = ResourcesLibrary.LibraryObject.BlueprintsByAssetId;
+#else
                 toc = ResourcesLibrary.BlueprintsCache.m_LoadedBlueprints;
+#endif
             }
+#if Wrath
+            var allGUIDs = new List<BlueprintGuid> { };
+#else
             var allGUIDs = new List<string> { };
+#endif
             foreach (var key in toc.Keys) {
                 allGUIDs.Add(key);
             }
             total = allGUIDs.Count;
             UpdateProgress(loaded, total);
             foreach (var guid in allGUIDs) {
+#if KM
+                toc.TryGetValue(guid, out var bp);
+#else
                 var bp = bpCache.Load(guid);
+#endif
                 blueprints.Add(bp);
                 loaded += 1;
                 UpdateProgress(loaded, total);

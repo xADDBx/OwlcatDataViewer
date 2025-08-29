@@ -157,7 +157,7 @@ namespace DataViewer.Menus {
                                 using (new GUILayout.VerticalScope()) {
                                     foreach (Patch patch in patches) {
                                         bool enabled = enabledPatches.Contains(patch);
-                                        if (ModKit.Private.UI.CheckBox("", enabled, false)) {
+                                        if (UI.CheckBox("", enabled, false)) {
                                             EnablePatchForMethod(!enabled, patch, method);
                                         }
                                     }
