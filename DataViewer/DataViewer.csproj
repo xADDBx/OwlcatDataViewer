@@ -5,7 +5,7 @@
 		<TargetGame Condition="'$(TargetGame)' == ''">$(Configuration)</TargetGame>
 
 		<TargetFramework Condition="'$(Configuration)' != 'Kingmaker'">net481</TargetFramework>
-		<TargetFramework Condition="'$(Configuration)' == 'Kingmaker'">net481</TargetFramework>
+		<TargetFramework Condition="'$(Configuration)' == 'Kingmaker'">net472</TargetFramework>
 		<AssemblyName>DataViewer</AssemblyName>
 		<Description>DataViewer</Description>
 		<Version>1.0.7</Version>
