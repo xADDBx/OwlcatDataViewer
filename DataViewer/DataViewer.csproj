@@ -25,21 +25,21 @@
 	<Import Project="$(SolutionDir)GamePath_RogueTrader.props" Condition="Exists('$(SolutionDir)GamePath_RogueTrader.props') and '$(TargetGame)' == 'RogueTrader'" />
 
 	<PropertyGroup Condition="'$(TargetGame)' == 'RogueTrader'">
-		<Game>RogueTrader</Game>
 		<GameDataFolder>WH40KRT_Data</GameDataFolder>
 		<DefineConstants>RT</DefineConstants>
+		<ChosenInstallDir>$(RogueTraderInstallDir)</ChosenInstallDir>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetGame)' == 'Wrath'">
-		<Game>Wrath</Game>
 		<GameDataFolder>Wrath_Data</GameDataFolder>
 		<DefineConstants>Wrath</DefineConstants>
+		<ChosenInstallDir>$(WrathInstallDir)</ChosenInstallDir>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(TargetGame)' == 'Kingmaker'">
-		<Game>Kingmaker</Game>
 		<GameDataFolder>Kingmaker_Data</GameDataFolder>
 		<DefineConstants>KM</DefineConstants>
+		<ChosenInstallDir>$(KingmakerInstallDir)</ChosenInstallDir>
 	</PropertyGroup>
 	<ItemGroup Condition="'$(TargetGame)' == 'RogueTrader'">
 		<Reference Include="$(RogueTraderInstallDir)\$(GameDataFolder)\Managed\Unity*.dll" Private="false" />
@@ -98,13 +98,7 @@
 		<PackageReference Include="MicroUtils.HarmonyAnalyzers" IncludeAssets="runtime; build; native; contentfiles; analyzers" Version="*-*" PrivateAssets="all" />
 	</ItemGroup>
 
-	<PropertyGroup>
-		<ChosenInstallDir Condition="'$(TargetGame)' == 'RogueTrader'">$(RogueTraderInstallDir)</ChosenInstallDir>
-		<ChosenInstallDir Condition="'$(TargetGame)' == 'Wrath'">$(WrathInstallDir)</ChosenInstallDir>
-		<ChosenInstallDir Condition="'$(TargetGame)' == 'Kingmaker'">$(KingmakerInstallDir)</ChosenInstallDir>
-	</PropertyGroup>
 	<Target Name="GenerateCustomPropsFile" Condition="'$(ChosenInstallDir)' == ''">
-		<!-- RogueTrader -->
 		<Exec Condition="'$(RogueTraderInstallDir)' == ''"
 			  Command="findstr /C:&quot;Mono path[0]&quot; &quot;$(RogueTraderData)\Player.log&quot;"
 			  IgnoreExitCode="true" ConsoleToMSBuild="true">
@@ -125,7 +119,6 @@
 &lt;/Project&gt;"
 						  Overwrite="true" Encoding="utf-8" />
 
-		<!-- Wrath -->
 		<Exec Condition="'$(WrathInstallDir)' == ''"
 			  Command="findstr /C:&quot;Mono path[0]&quot; &quot;$(WrathData)\Player.log&quot;"
 			  IgnoreExitCode="true" ConsoleToMSBuild="true">
@@ -146,7 +139,6 @@
 &lt;/Project&gt;"
 						  Overwrite="true" Encoding="utf-8" />
 
-		<!-- Kingmaker (different log format) -->
 		<Exec Condition="'$(KingmakerInstallDir)' == ''"
 			  Command="findstr /C:&quot;[Manager] Mods path: &quot; &quot;$(KingmakerData)\output_log.txt&quot;"
 			  IgnoreExitCode="true" ConsoleToMSBuild="true">
