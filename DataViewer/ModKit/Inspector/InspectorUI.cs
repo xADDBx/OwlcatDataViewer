@@ -80,16 +80,6 @@ public static partial class InspectorUI {
                     GUILayout.Space(20);
                     ToyBox.Infrastructure.UI.UI.DisclosureToggle(ref m_DoShowSettings, "Show Settings");
                 }
-                if (m_DoShowSearch) {
-                    using (new GUILayout.HorizontalScope()) {
-                        ToyBox.Infrastructure.UI.UI.Label(SearchDepthText + ": ", GUILayout.Width(200));
-                        if (ToyBox.Infrastructure.UI.UI.ValueAdjuster(ref m_SearchDepth, 1, 0, 8, false)) {
-                            if (InspectorSearcher.DidSearch) {
-                                InspectorSearcher.LastPrompt = null;
-                            }
-                        }
-                    }
-                }
                 if (m_DoShowSettings) {
                     using (VerticalScope()) {
                         UI.Toggle("Show Null and Empty Members", null, ref Main.settings.ToggleInspectorShowNullAndEmptyMembers, () => { }, () => { });
@@ -116,6 +106,16 @@ public static partial class InspectorUI {
                             UI.LogSlider(ref Main.settings.InspectorSearchBatchSize, 100, 1000000, 20000);
                             Space(10);
                             UI.Label("Searcher Batch Size (Lower numbers mean less ui lag during search but longer search time)".Cyan());
+                        }
+                    }
+                }
+                if (m_DoShowSearch) {
+                    using (new GUILayout.HorizontalScope()) {
+                        ToyBox.Infrastructure.UI.UI.Label(SearchDepthText + ": ", GUILayout.Width(200));
+                        if (ToyBox.Infrastructure.UI.UI.ValueAdjuster(ref m_SearchDepth, 1, 0, 8, false)) {
+                            if (InspectorSearcher.DidSearch) {
+                                InspectorSearcher.LastPrompt = null;
+                            }
                         }
                     }
                 }
