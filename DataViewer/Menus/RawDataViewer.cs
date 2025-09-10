@@ -108,7 +108,7 @@ namespace DataViewer.Menus
             {
                 Main.settings.selectedRawDataType = 0;
                 modEntry.Logger.Error(e.StackTrace);
-                throw e;
+                throw;
             }
         }
 
