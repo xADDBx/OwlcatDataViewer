@@ -8,7 +8,7 @@
 		<TargetFramework Condition="'$(Configuration)' == 'Kingmaker'">net472</TargetFramework>
 		<AssemblyName>DataViewer</AssemblyName>
 		<Description>DataViewer</Description>
-		<Version>1.0.7</Version>
+		<Version>1.0.8</Version>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>preview</LangVersion>
 		<Nullable>annotations</Nullable>

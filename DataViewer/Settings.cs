@@ -1,4 +1,5 @@
-﻿using UnityModManagerNet;
+﻿using ModKit;
+using UnityModManagerNet;
 
 namespace DataViewer
 {
@@ -11,5 +12,17 @@ namespace DataViewer
         public string searchChildName = "name";
         public string searchText = "";
         public bool searchReversed = false;
+        // - Inspector
+        public bool ToggleInspectorShowNullAndEmptyMembers = false;
+        public bool ToggleInspectorShowStaticMembers = true;
+        public bool ToggleInspectorShowFieldsOnEnumerable = false;
+        public bool ToggleInspectorShowCompilerGeneratedFields = true;
+        public bool ToggleInspectorSlimMode = false;
+        public int InspectorSearchBatchSize = 20000;
+        public int InspectorDrawLimit = 4000;
+        public float InspectorIndentWidth = 20f;
+        public float InspectorNameFractionOfWidth = 0.3f;
+
+        public LogLevel LogLevel = LogLevel.Info;
     }
 }

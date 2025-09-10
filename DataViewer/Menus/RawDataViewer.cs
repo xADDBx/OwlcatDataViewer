@@ -1,4 +1,5 @@
-﻿using DataViewer.Utility;
+﻿using DataViewer.Infrastructure.Inspector;
+using DataViewer.Utility;
 using Kingmaker;
 using Kingmaker.Blueprints.Root;
 #if Wrath
@@ -72,20 +73,15 @@ namespace DataViewer.Menus
 
         private readonly string[] _targetNames = TARGET_LIST.Keys.ToArray();
 
-        private ReflectionTreeView _treeView = null;
+        private object? m_ToInspect = null;
        
         public string Name => "Raw Data";
 
         public int Priority => 0;
         void ResetTree() {
-            if (_treeView == null)
-                _treeView = new ReflectionTreeView();
 
             Func<object> getTarget = TARGET_LIST[_targetNames[Main.settings.selectedRawDataType]];
-            if (getTarget == null)
-                _treeView.Clear();
-            else
-                _treeView.SetRoot(getTarget());
+            m_ToInspect = getTarget();
         }
         public void OnGUI(UnityModManager.ModEntry modEntry)
         {
@@ -94,8 +90,7 @@ namespace DataViewer.Menus
 
             try
             {
-                if (_treeView == null)
-                    ResetTree();
+                if (m_ToInspect == null) ResetTree();
 
                 // target selection
                 UI.ActionSelectionGrid(ref Main.settings.selectedRawDataType, _targetNames, 5, (s) => {
@@ -106,14 +101,12 @@ namespace DataViewer.Menus
                 if (Main.settings.selectedRawDataType != 0)
                 {
                     GUILayout.Space(10f);
-
-                    _treeView.OnGUI();
+                    InspectorUI.Inspect(m_ToInspect);
                 }
             }
             catch (Exception e)
             {
                 Main.settings.selectedRawDataType = 0;
-                _treeView.Clear();
                 modEntry.Logger.Error(e.StackTrace);
                 throw e;
             }

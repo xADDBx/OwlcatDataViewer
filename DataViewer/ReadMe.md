@@ -1,4 +1,7 @@
 ﻿# Data Viewer for Wrath of the Righteous
+### Version 1.0.8
+Switch to ToyBox Inspector UI
+
 ### Version 1.0.5
 * BlueprintReference cached value gets automatically populated so drill as deep as you like `^_^`
 * Search criteria in blueprint viewer are remembered

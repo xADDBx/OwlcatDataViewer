@@ -20,7 +20,8 @@ namespace DataViewer
         public static bool IsInGame { get { return Game.Instance.Player.Party.Any(); } }
 
         public static MenuManager Menu;
-        public static UnityModManager.ModEntry modEntry = null;
+        public static UnityModManager.ModEntry ModEntry = null;
+        internal static Action? OnHideGUIAction;
 
         public static Rect ummRect = new Rect();
         public static float ummWidth = 960f;
@@ -28,7 +29,7 @@ namespace DataViewer
         public static bool IsNarrow { get { return ummWidth < 1600; } }
         public static bool IsWide { get { return ummWidth >= 2000; } }
 
-        public static void Log(string s) { if (modEntry != null) modEntry.Logger.Log(s); }
+        public static void Log(string s) { if (ModEntry != null) ModEntry.Logger.Log(s); }
         public static void Log(int indent, string s) { Log("    ".Repeat(indent) + s); }
         static bool Load(UnityModManager.ModEntry modEntry) {
             ModManager = new ModManager<Core, Settings>();
@@ -52,6 +53,10 @@ namespace DataViewer
 #endif
         static void ModManagerPropertyChanged(object sender, PropertyChangedEventArgs e) {
             settings.selectedTab = Menu.tabIndex;
+        }
+        private static void OnHideGUI(UnityModManager.ModEntry modEntry) {
+            settings.Save(modEntry);
+            OnHideGUIAction?.Invoke();
         }
 
         static bool OnToggle(UnityModManager.ModEntry modEntry, bool value)
