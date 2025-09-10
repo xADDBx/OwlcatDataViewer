@@ -1,6 +1,9 @@
 ﻿using DataViewer.Utility;
 using Kingmaker;
 using Kingmaker.Blueprints.Root;
+#if Wrath
+using Kingmaker.Globalmap.View;
+#endif
 using ModKit;
 using ModKit.Utility;
 using System;
@@ -26,21 +29,41 @@ namespace DataViewer.Menus
             { "Game", () => Game.Instance },
             { "Player", () => Game.Instance?.Player },
             { "Characters", () => Game.Instance?.Player?.AllCharacters },
-//            { "Units", () => Game.Instance?.State?.Units },
+#if RT
+            { "AllUnits", () => Game.Instance?.State?.AllUnits },
+#else
+            { "Units", () => Game.Instance?.State?.Units },
+#endif
             { "States", () => Game.Instance?.State },
             { "Inventory", () => Game.Instance?.Player?.Inventory },
             { "Dialog", () => Game.Instance?.DialogController },
             { "Vendor", () => Game.Instance?.Vendor },
             { "Scene", () => SceneManager.GetActiveScene() },
-//            { "UI", () => Game.Instance?.UI },
-//            { "Static Canvas", () => Game.Instance?.UI?.Canvas?.gameObject },
+#if RT
+            { "RootUiContext", () => Game.Instance?.RootUiContext },
+#else
+            { "UI", () => Game.Instance?.UI },
+            { "Static Canvas", () => Game.Instance?.UI?.Canvas?.gameObject },
+#endif
             { "Quest Book", () => Game.Instance?.Player?.QuestBook },
-//            { "Kingdom", () => Game.Instance?.Player?.Kingdom },
+#if KM
+            { "Kingdom", () => Game.Instance?.Player?.Kingdom },
+#endif
             { "Area", () => Game.Instance?.CurrentlyLoadedArea },
-//            { "GlobalMap", () => Game.Instance?.Player?.GlobalMap },
-//            { "GlobalMapController", () => Game.Instance.GlobalMapController },
-//            { "GlobalMapView", () => GlobalMapView.Instance },
-//            { "GlobalMapUI", () => Game.Instance.UI.GlobalMapUI },
+#if RT
+            { "SectorMapController", () => Game.Instance?.SectorMapController },
+            { "SectorMapController", () => Game.Instance?.SectorMapTravelController },
+#elif Wrath
+            { "GlobalMapController", () => Game.Instance.GlobalMapController },
+            { "GlobalMapView", () => GlobalMapView.Instance },
+#else
+            { "GlobalMap", () => Game.Instance?.Player?.GlobalMap },
+#endif
+#if RT
+            { "SpaceVM", () => Game.Instance.RootUiContext.SpaceVM },
+#else
+            { "GlobalMapUI", () => Game.Instance.UI.GlobalMapUI },
+#endif
             { "BlueprintRoot", () => Kingmaker.Blueprints.Root.BlueprintRoot.Instance },
             { "Root Game Objects", () => RawDataViewer.GetAllScenes().SelectMany(s => s.GetRootGameObjects()) },
             { "Game Objects", () => UnityEngine.Object.FindObjectsOfType<GameObject>() },
