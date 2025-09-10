@@ -79,9 +79,12 @@ namespace DataViewer.Menus
 
         public int Priority => 0;
         void ResetTree() {
-
             Func<object> getTarget = TARGET_LIST[_targetNames[Main.settings.selectedRawDataType]];
-            m_ToInspect = getTarget();
+            if (getTarget == null) {
+                m_ToInspect = null;
+            } else {
+                m_ToInspect = getTarget();
+            }
         }
         public void OnGUI(UnityModManager.ModEntry modEntry)
         {
