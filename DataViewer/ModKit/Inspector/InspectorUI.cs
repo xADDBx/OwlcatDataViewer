@@ -113,7 +113,7 @@ public static partial class InspectorUI {
                             UI.Label("Name section relative width".Cyan());
                         }
                         using (HorizontalScope()) {
-                            UI.Slider(ref Main.settings.InspectorSearchBatchSize, 100, 1000000, 20000);
+                            UI.LogSlider(ref Main.settings.InspectorSearchBatchSize, 100, 1000000, 20000);
                             Space(10);
                             UI.Label("Searcher Batch Size (Lower numbers mean less ui lag during search but longer search time)".Cyan());
                         }
