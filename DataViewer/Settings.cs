@@ -19,7 +19,12 @@ namespace DataViewer
         public bool ToggleInspectorShowCompilerGeneratedFields = true;
         public bool ToggleInspectorSlimMode = false;
         public int InspectorSearchBatchSize = 20000;
-        public int InspectorDrawLimit = 500;
+        public int InspectorDrawLimit =
+#if KM
+            300;
+#else
+            500;
+#endif
         public float InspectorIndentWidth = 20f;
         public float InspectorNameFractionOfWidth = 0.3f;
 
