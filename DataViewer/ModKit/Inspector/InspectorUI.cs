@@ -98,7 +98,7 @@ public static partial class InspectorUI {
                         UI.Toggle("Show Compiler Generated Members", null, ref Main.settings.ToggleInspectorShowCompilerGeneratedFields, () => { }, () => { });
                         UI.Toggle("Slim Mode", null, ref Main.settings.ToggleInspectorSlimMode, () => { }, () => { });
                         using (HorizontalScope()) {
-                            UI.Slider(ref Main.settings.InspectorDrawLimit, 10, 10000, 2500);
+                            UI.Slider(ref Main.settings.InspectorDrawLimit, 10, 10000, 500);
                             Space(10);
                             UI.Label("Max items drawn".Cyan());
                         }
