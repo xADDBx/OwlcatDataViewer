@@ -35,6 +35,7 @@ namespace DataViewer
             ModManager = new ModManager<Core, Settings>();
             Menu = new MenuManager();
             modEntry.OnToggle = OnToggle;
+            Main.ModEntry = modEntry;
 #if (DEBUG)
             modEntry.OnUnload = Unload;
             Main.modEntry = modEntry;
