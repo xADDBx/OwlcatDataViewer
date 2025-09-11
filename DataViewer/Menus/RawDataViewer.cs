@@ -53,7 +53,7 @@ namespace DataViewer.Menus
             { "Area", () => Game.Instance?.CurrentlyLoadedArea },
 #if RT
             { "SectorMapController", () => Game.Instance?.SectorMapController },
-            { "SectorMapController", () => Game.Instance?.SectorMapTravelController },
+            { "SectorMapTravelController", () => Game.Instance?.SectorMapTravelController },
 #elif Wrath
             { "GlobalMapController", () => Game.Instance.GlobalMapController },
             { "GlobalMapView", () => GlobalMapView.Instance },
